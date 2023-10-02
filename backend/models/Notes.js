@@ -7,13 +7,13 @@ const NotesSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
-    tittle: {
+    title: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     tag: {
         type: String,

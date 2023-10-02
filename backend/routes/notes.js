@@ -12,10 +12,10 @@ router.get('/fetchallnotes', fetchUser, async (req, res) => {
 
 //Router 2 adding notes
 router.post('/addnotes', fetchUser, [
-    body('tittle', 'enter a valid tittle').isLength({ min: 3 }),
+    body('title', 'enter a valid title').isLength({ min: 3 }),
     body('description', 'enter a valid descripton').isLength({ min: 5 })
 ], async (req, res) => {
-    const { description, tag } = req.body
+    const {title, description, tag } = req.body
 
     // if there are errors return bad request
     const errors = validationResult(req);
@@ -24,7 +24,7 @@ router.post('/addnotes', fetchUser, [
     }
 
     const note = new Notes({
-        tittle, description, tag, user: req.user.id
+        title, description, tag, user: req.user.id
     })
 
     const saveNote = await note.save()
@@ -35,11 +35,11 @@ router.post('/addnotes', fetchUser, [
 
 // Route 3 : updateing exsiting note
 router.put('/updatenote/:id', fetchUser, async (req, res) => {
-    const { tittle, description, tag } = req.body;
+    const { title, description, tag } = req.body;
     try {
         // Create a newNote object
         const newNote = {};
-        if (tittle) { newNote.tittle = tittle };
+        if (title) { newNote.title = title };
         if (description) { newNote.description = description };
         if (tag) { newNote.tag = tag };
 
