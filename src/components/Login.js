@@ -1,19 +1,37 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import noteContext from '../context/notes/noteContext';
+
 
 const Login = () => {
+    const context = useContext(noteContext)
+    const { login, token } = context  
+    const [credentials, setCredentials] = useState({ email: "", password: "" })
+    const onchange = (e) => {
+        setCredentials({ ...credentials, [e.target.name]: e.target.value })
+    }
+    const loginSubmit = (e)=>{
+        e.preventDefault()
+        login(credentials.email, credentials.password)
+    }
+    useEffect(()=>{
+        console.log("check token from context",token)
+        if(token!==""){
+            window.location.reload()
+        }
+    },[token])
     return (
         <div>
-            <form onSubmit={submit}>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"/>
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <form >
+                <div className="mb-3">
+                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                    <input type="email" className="form-control" id="email" aria-describedby="emailHelp" name="email" value={credentials.email} onChange={onchange} />
+                    <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                 </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" />
+                <div className="mb-3">
+                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                    <input type="password" className="form-control" id="password" name="password" onChange={onchange} value={credentials.password} />
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary" onClick={loginSubmit}>Login</button>
             </form>
         </div>
     )

@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from "react-router-dom"
 
 
 const Navbar = () => {
+    const [token, setToken] = useState(false)
     let location = useLocation();
-   
+
+    const logout = () => {
+        localStorage.removeItem("token")
+        window.location.reload()
+    }
+
+    useEffect(() => {
+        // finding token 
+        let i;
+        for (i = 0; i < localStorage.length; i++) {
+            let findingToken = localStorage.key(i);
+            if (findingToken === "token") {
+                setToken(true)
+            }
+        }
+    },[logout])
+
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -14,27 +31,31 @@ const Navbar = () => {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname==="/"? "active":""}`} aria-current="page" to="/">Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname==="/about"? "active":""}`} to="/about">About</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname==="/addnote"? "active":""}`} aria-current="page" to="/addnote">Add Note</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname==="/yournotes"? "active":""}`} aria-current="page" to="/yournotes">Your Notes</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname==="/"? "active":""}`} aria-current="page" to="/">Profile</Link>
-                            </li>
-                        </ul>
-                        <form className="d-flex" role="search">
-                            <Link className="btn btn-outline-success mx-1" to={'/login'} role='button' type="submit">Login</Link>
-                            <Link className="btn btn-outline-success mx-1" to={'/signup'} role='button' type="submit">Signup</Link>
-                        </form>
+                        {token ?
+                            <>
+                                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Home</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === "/addnote" ? "active" : ""}`} aria-current="page" to="/addnote">Add Note</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === "/yournotes" ? "active" : ""}`} aria-current="page" to="/yournotes">Your Notes</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Profile</Link>
+                                    </li>
+                                </ul>
+                                <Link className="btn btn-outline-success mx-1" role='button' type="submit" onClick={logout}>logout</Link>
+                            </>
+                            : <>
+                                <Link className="btn btn-outline-success mx-1" to={'/'} role='button' type="submit">Login</Link>
+                                <Link className="btn btn-outline-success mx-1" to={'/signup'} role='button' type="submit">Signup</Link>
+                            </>}
                     </div>
                 </div>
             </nav>

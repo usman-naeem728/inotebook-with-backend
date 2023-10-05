@@ -1,12 +1,27 @@
 import { useState } from "react";
 import NoteContext from "./noteContext";
 
+
 const NoteState = (props) => {
+    
     const host = "http://localhost:5000"
     const n1 = []
-
     const [notes, setNotes] = useState(n1)
+    const [token,setToken] = useState("")
 
+    //signup endponit
+    const signup = async (name,email,password) => {
+        const response = await fetch(`${host}/api/auth/createuser`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }, body: JSON.stringify({name, email, password}),
+        });
+        const json = await response.json()
+        console.log("success",json)
+        localStorage.setItem("token",json.authToken)
+        setToken(json.authToken)
+    }
     //login endpoint
     const login = async (email,password) => {
         const response = await fetch(`${host}/api/auth/login`, {
@@ -17,6 +32,8 @@ const NoteState = (props) => {
         });
         const json = await response.json()
         console.log("success",json)
+        localStorage.setItem("token",json.authToken)
+        setToken(json.authToken)
     }
 
     //fetch all notes
@@ -89,7 +106,7 @@ const NoteState = (props) => {
     }
 
     return (
-        <NoteContext.Provider value={{ notes, addNote, deleteNote,getNotes, editNotes, login }}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote,getNotes, editNotes, login,signup, token }}>
             {props.children}
         </NoteContext.Provider>
     )

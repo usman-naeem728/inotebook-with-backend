@@ -8,26 +8,46 @@ import AddNote from './components/AddNote';
 import YourNotes from './components/YourNotes';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [token, setToken] = useState(false)
+  useEffect(() => {
+    // finding token 
+    let i;
+    for (i = 0; i < localStorage.length; i++) {
+      let findingToken = localStorage.key(i);
+      if (findingToken === "token") {
+        setToken(true)
+      }
+    }
+  })
   return (
     <>
-    <NoteState>
-      <Router>
-        <Navbar />
-        <div className='container'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/home' element={<Home />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/addnote' element={<AddNote />} />
-          <Route path='/yournotes' element={<YourNotes />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-        </Routes>
-        </div>
-      </Router>
-    </NoteState>
+      <NoteState>
+        <Router>
+          <Navbar />
+          <div className='container'>
+
+            <Routes>
+              {token ?
+                <>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/home' element={<Home />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/addnote' element={<AddNote />} />
+                  <Route path='/yournotes' element={<YourNotes />} />
+
+                </> :
+                <>
+                  <Route path='/' element={<Login />} />
+                  <Route path='/signup' element={<Signup />} />
+                </>
+              }
+            </Routes>
+          </div>
+        </Router>
+      </NoteState>
     </>
   );
 }
