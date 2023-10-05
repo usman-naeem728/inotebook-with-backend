@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
     const [token, setToken] = useState(false)
+    const navigate = useNavigate()
     let location = useLocation();
 
     const logout = () => {
         localStorage.removeItem("token")
+        navigate('/')
         window.location.reload()
     }
 
@@ -47,7 +50,7 @@ const Navbar = () => {
                                         <Link className={`nav-link ${location.pathname === "/yournotes" ? "active" : ""}`} aria-current="page" to="/yournotes">Your Notes</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Profile</Link>
+                                        <Link className={`nav-link ${location.pathname === "/profile" ? "active" : ""}`} aria-current="page" to="/profile">Profile</Link>
                                     </li>
                                 </ul>
                                 <Link className="btn btn-outline-success mx-1" role='button' type="submit" onClick={logout}>logout</Link>

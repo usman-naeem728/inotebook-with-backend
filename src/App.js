@@ -8,6 +8,7 @@ import AddNote from './components/AddNote';
 import YourNotes from './components/YourNotes';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Profile from './components/Profile';
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
                   <Route path='/about' element={<About />} />
                   <Route path='/addnote' element={<AddNote />} />
                   <Route path='/yournotes' element={<YourNotes />} />
-
+                  <Route path='/profile' element={<Profile />} />
                 </> :
                 <>
                   <Route path='/' element={<Login />} />
