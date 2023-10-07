@@ -2,38 +2,49 @@ import { useState } from "react";
 import NoteContext from "./noteContext";
 
 
+
 const NoteState = (props) => {
-    
+
     const host = "http://localhost:5000"
     const n1 = []
     const [notes, setNotes] = useState(n1)
-    const [token,setToken] = useState("")
-    const [userData,setUserData] = useState({})
+    const [token, setToken] = useState("")
+    const [userData, setUserData] = useState({})
+    const [error,setError] = useState("")
     //signup endponit
-    const signup = async (name,email,password) => {
+    const signup = async (name, email, password) => {
         const response = await fetch(`${host}/api/auth/createuser`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            }, body: JSON.stringify({name, email, password}),
+            }, body: JSON.stringify({ name, email, password }),
         });
         const json = await response.json()
-        console.log("success",json)
-        localStorage.setItem("token",json.authToken)
-        setToken(json.authToken)
+        // console.log("success", json)
+        if(!json.error){
+            localStorage.setItem("token", json.authToken)
+            setToken(json.authToken)
+        }else{
+            setError(json.error)
+        }
+
     }
     //login endpoint
-    const login = async (email,password) => {
+    const login = async (email, password) => {
         const response = await fetch(`${host}/api/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            }, body: JSON.stringify({email, password}),
+            }, body: JSON.stringify({ email, password }),
         });
         const json = await response.json()
-        console.log("success",json)
-        localStorage.setItem("token",json.authToken)
-        setToken(json.authToken)
+        console.log("success", json)
+        if(!json.error){
+            localStorage.setItem("token", json.authToken)
+            setToken(json.authToken)
+        }else{
+            setError(json.error)
+        }
     }
     // get user personal data
     const getUser = async () => {
@@ -46,7 +57,7 @@ const NoteState = (props) => {
         });
         const json = await response.json()
         setUserData(json)
-    } 
+    }
     //fetch all notes
     const getNotes = async () => {
         const response = await fetch(`${host}/api/notes/fetchallnotes`, {
@@ -59,7 +70,7 @@ const NoteState = (props) => {
         const json = await response.json()
         setNotes(json)
     }
-        
+
     // add notes
     const addNote = async (title, description, tag) => {
         const response = await fetch(`${host}/api/notes/addnotes`, {
@@ -68,9 +79,9 @@ const NoteState = (props) => {
                 "Content-Type": "application/json",
                 "auth-token": localStorage.getItem('token')
             },
-            body: JSON.stringify({title,description,tag}),
+            body: JSON.stringify({ title, description, tag }),
         });
-        const note =  response.json();
+        const note = response.json();
         setNotes(notes.concat(note))
     }
 
@@ -83,9 +94,9 @@ const NoteState = (props) => {
                 "Content-Type": "application/json",
                 "auth-token": localStorage.getItem('token')
             },
-            body: JSON.stringify({title,description,tag}),
+            body: JSON.stringify({ title, description, tag }),
         });
-        const json =  response.json();
+        const json = response.json();
         console.log(json)
         let newNotes = JSON.parse(JSON.stringify(notes))
         //logic for edit client side
@@ -101,7 +112,7 @@ const NoteState = (props) => {
         setNotes(newNotes)
     }
 
-        // delete notes
+    // delete notes
     const deleteNote = async (id) => {
         //api call
         const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
@@ -117,7 +128,7 @@ const NoteState = (props) => {
     }
 
     return (
-        <NoteContext.Provider value={{ notes, addNote, deleteNote,getNotes, editNotes, login,signup,getUser,userData, token }}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, getNotes, editNotes, login, signup, getUser, userData, token,error }}>
             {props.children}
         </NoteContext.Provider>
     )

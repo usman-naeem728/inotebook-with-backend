@@ -24,12 +24,12 @@ const AddNote = () => {
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">TITLE</label>
                     <input type="text" className="form-control" id='title' name='title' onChange={onChange} value={note.title} />
-                    <a style={{color:"red"}}>{note.title.length<3 && "MUST BE ATLEAST 3 CHARACTERS"}</a>
+                    {note.title.length<3 && !note.title.length==0 && <a style={{color:"red"}}>MUST BE ATLEAST 3 CHARACTERS</a> }
                 </div>
                 <div className="mb-3">
                     <label htmlFor="description" className="form-label">DESCRIPTION</label>
                     <input type="text" className="form-control" id='description' name='description' onChange={onChange} value={note.description} />
-                    <a style={{color:"red"}}>{note.description.length<5 && "MUST BE ATLEAST 5 CHARACTERS"}</a>
+                    {note.description.length<5 && !note.description.length==0 && <a style={{color:"red"}}>MUST BE ATLEAST 5 CHARACTERS</a> }
                 </div>
                 <div className="mb-3">
                     <label htmlFor="tag" className="form-label">tag</label>

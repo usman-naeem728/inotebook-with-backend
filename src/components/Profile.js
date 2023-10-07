@@ -7,11 +7,13 @@ const Profile = () => {
     const { getUser, userData } = context
     useEffect(()=>{
         getUser()
+        // console.log("img url", userData.pic)
     })
 
     return (
         <div className='container d-flex justify-content-center text-center'>
         <div className='row mt-5'>
+            {/* <img src={userData.pic} width={20} /> */}
             <div className="card" style={{width: "18rem"}}>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item fw-bold">NAME:</li>

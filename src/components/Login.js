@@ -4,24 +4,25 @@ import noteContext from '../context/notes/noteContext';
 
 const Login = () => {
     const context = useContext(noteContext)
-    const { login, token } = context  
+    const { login, token, error } = context
     const [credentials, setCredentials] = useState({ email: "", password: "" })
     const onchange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
-    const loginSubmit = (e)=>{
+    const loginSubmit = (e) => {
         e.preventDefault()
         login(credentials.email, credentials.password)
     }
-    useEffect(()=>{
-        console.log("check token from context",token)
-        if(token!==""){
+    useEffect(() => {
+        // console.log("check token from context", token)
+        if (token !== "") {
             window.location.reload()
         }
-    },[token])
+    }, [token, error])
     return (
         <div>
-            <form >
+
+            <form className='mt-3'>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                     <input type="email" className="form-control" id="email" aria-describedby="emailHelp" name="email" value={credentials.email} onChange={onchange} />
@@ -33,6 +34,10 @@ const Login = () => {
                 </div>
                 <button type="submit" className="btn btn-primary" onClick={loginSubmit}>Login</button>
             </form>
+            {error ?
+                <div className="alert alert-danger my-5" role="alert">
+                    {error}
+                </div> : ""}
         </div>
     )
 }
